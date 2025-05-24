@@ -264,8 +264,8 @@ namespace platf::dxgi {
       BOOST_LOG(info) << "Capture format ["sv << dxgi_format_to_string(capture_format) << ']';
 
       D3D11_TEXTURE2D_DESC t {};
-      t.Width = width;
-      t.Height = height;
+      t.Width = width/2 - 10;
+      t.Height = height/2 + 10;
       t.MipLevels = 1;
       t.ArraySize = 1;
       t.SampleDesc.Count = 1;
