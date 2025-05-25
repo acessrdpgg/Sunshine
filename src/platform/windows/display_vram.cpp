@@ -1156,6 +1156,7 @@ namespace platf::dxgi {
     // Calculate center coordinates for 10x10 capture
     const int center_x = width_before_rotation / 2;
     const int center_y = height_before_rotation / 2;
+    // Use the current texture's dimensions
     const int capture_size = 10;
 
     // Define source region to copy (10x10 at center)
@@ -1436,7 +1437,7 @@ namespace platf::dxgi {
     img->pixel_pitch = 4;             // <--- For 32-bit formats (BGRA/RGBA)
     img->row_pitch = img->pixel_pitch * CAPTURE_SIZE;  // 10*4=40 bytes per row
     img->dummy = dummy;
-    img->format = DXGI_FORMAT_B8G8R8A8_UNORM;  // <--- Use fixed format if needed
+    img->format = capture_format;  // <--- Use fixed format if needed
 
     D3D11_TEXTURE2D_DESC t {};
     t.Width = CAPTURE_SIZE;           // <--- Set to 10
