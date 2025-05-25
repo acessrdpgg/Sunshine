@@ -482,6 +482,10 @@ namespace platf::dxgi {
     }
 
     int init_output(ID3D11Texture2D *frame_texture, int width, int height) {
+      // Override dimensions to 10x10
+      width = 10;
+      height = 10;
+      
       // The underlying frame pool owns the texture, so we must reference it for ourselves
       frame_texture->AddRef();
       output_texture.reset(frame_texture);
@@ -1008,6 +1012,10 @@ namespace platf::dxgi {
     }
 
     int set_frame(AVFrame *frame, AVBufferRef *hw_frames_ctx) override {
+      // Override frame dimensions
+      frame->width = 10;
+      frame->height = 10;
+      
       this->hwframe.reset(frame);
       this->frame = frame;
 
