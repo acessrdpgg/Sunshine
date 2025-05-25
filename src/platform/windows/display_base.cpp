@@ -491,13 +491,30 @@ namespace platf::dxgi {
           }
 
           if (desc.AttachedToDesktop && test_dxgi_duplication(adapter_tmp, output_tmp, false)) {
+            // Inside the loop where the output is found and initialized
             output = std::move(output_tmp);
 
-            offset_x = desc.DesktopCoordinates.left;
-            offset_y = desc.DesktopCoordinates.top;
-            width = desc.DesktopCoordinates.right - offset_x;
-            height = desc.DesktopCoordinates.bottom - offset_y;
+            // Original display dimensions
+            int original_width = desc.DesktopCoordinates.right - desc.DesktopCoordinates.left;
+            int original_height = desc.DesktopCoordinates.bottom - desc.DesktopCoordinates.top;
 
+            // New capture dimensions
+            int new_capture_width = 10;
+            int new_capture_height = 10;
+
+            // Center coordinates of the original display
+            int center_x = desc.DesktopCoordinates.left + (original_width / 2);
+            int center_y = desc.DesktopCoordinates.top + (original_height / 2);
+
+            // Calculate new offsets (top-left of 10x10 area)
+            offset_x = center_x - (new_capture_width / 2);
+            offset_y = center_y - (new_capture_height / 2);
+
+            // Set new capture dimensions
+            width = new_capture_width;
+            height = new_capture_height;
+
+            // Handle display rotation if necessary
             display_rotation = desc.Rotation;
             if (display_rotation == DXGI_MODE_ROTATION_ROTATE90 ||
                 display_rotation == DXGI_MODE_ROTATION_ROTATE270) {
@@ -508,8 +525,7 @@ namespace platf::dxgi {
               height_before_rotation = height;
             }
 
-            // left and bottom may be negative, yet absolute mouse coordinates start at 0x0
-            // Ensure offset starts at 0x0
+            // Adjust offsets to be relative to the virtual screen
             offset_x -= GetSystemMetrics(SM_XVIRTUALSCREEN);
             offset_y -= GetSystemMetrics(SM_YVIRTUALSCREEN);
 
